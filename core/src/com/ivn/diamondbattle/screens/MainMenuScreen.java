@@ -17,6 +17,7 @@ import com.ivn.diamondbattle.Aplication;
 import com.ivn.diamondbattle.managers.ResourceManager;
 import com.ivn.diamondbattle.managers.SpriteManager;
 
+import static com.ivn.diamondbattle.managers.SpriteManager.miNombre;
 import static com.ivn.diamondbattle.managers.SpriteManager.miTextura;
 
 public class MainMenuScreen implements Screen {
@@ -91,6 +92,7 @@ public class MainMenuScreen implements Screen {
 
                     // Guardo la skin seleccionado por el jugador
                     miTextura = String.valueOf(cont);
+                    miNombre = nombre;
 
                     game.setScreen(new GameScreen(game));
                 }

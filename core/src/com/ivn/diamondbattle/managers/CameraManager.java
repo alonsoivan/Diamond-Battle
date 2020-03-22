@@ -96,9 +96,6 @@ public class CameraManager {
         {
             camera.position.y = mapTop - cameraHalfHeight;
         }
-
-        //  TODO camera.zoom
-
         camera.update();
         renderer.setView(camera);
     }
