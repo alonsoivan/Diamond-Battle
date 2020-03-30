@@ -19,6 +19,8 @@ import com.ivn.diamondbattle.managers.SpriteManager;
 
 import static com.ivn.diamondbattle.managers.SpriteManager.miNombre;
 import static com.ivn.diamondbattle.managers.SpriteManager.miTextura;
+import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS_GAME_GUN;
+import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS_SELECTION;
 
 public class MainMenuScreen implements Screen {
 
@@ -49,8 +51,8 @@ public class MainMenuScreen implements Screen {
         title.setBounds(Gdx.graphics.getWidth()/2 - title.getWidth() - 40,Gdx.graphics.getHeight()-100,200,50);
 
 
-        image = new Image(ResourceManager.getRegion("1"));
-        image.setBounds(270,150,400,700);
+        image = new Image(ResourceManager.getRegion("1",TEXTURE_ATLAS_SELECTION));
+        image.setBounds(270,150,image.getWidth(),image.getHeight());
 
         rightButton = new TextButton(">",game.getSkin());
         rightButton.setBounds(630,400,50,50);
@@ -62,7 +64,7 @@ public class MainMenuScreen implements Screen {
 
                 if(cont < 1)
                     cont = 5;
-                image.setDrawable(new TextureRegionDrawable(ResourceManager.getRegion(String.valueOf(cont))));
+                image.setDrawable(new TextureRegionDrawable(ResourceManager.getRegion(String.valueOf(cont),TEXTURE_ATLAS_SELECTION)));
             }
         });
 
@@ -77,7 +79,7 @@ public class MainMenuScreen implements Screen {
 
                 if(cont < 1)
                     cont = 5;
-                image.setDrawable(new TextureRegionDrawable(ResourceManager.getRegion(String.valueOf(cont))));
+                image.setDrawable(new TextureRegionDrawable(ResourceManager.getRegion(String.valueOf(cont),TEXTURE_ATLAS_SELECTION)));
             }
         });
 
@@ -95,6 +97,7 @@ public class MainMenuScreen implements Screen {
                     miNombre = nombre;
 
                     game.setScreen(new GameScreen(game));
+                    dispose();
                 }
             }
         });
@@ -176,6 +179,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }

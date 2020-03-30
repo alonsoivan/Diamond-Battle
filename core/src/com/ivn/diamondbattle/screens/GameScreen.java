@@ -2,10 +2,7 @@ package com.ivn.diamondbattle.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ArrayMap;
 import com.ivn.diamondbattle.Aplication;
 import com.ivn.diamondbattle.managers.CameraManager;
 import com.ivn.diamondbattle.managers.NetworkManager;

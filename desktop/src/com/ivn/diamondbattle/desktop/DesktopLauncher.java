@@ -7,8 +7,10 @@ import com.ivn.diamondbattle.Aplication;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 950;
-		config.height = 950;
+		// TODO ajustar tamaño, resizable, etc
+		config.width = 900;
+		config.height = 900;
+		config.resizable = false;
 		new LwjglApplication(new Aplication(), config);
 	}
 }

@@ -5,6 +5,8 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.ivn.diamondbattle.models.Bala;
+import com.ivn.diamondbattle.models.Diamante;
 import com.ivn.diamondbattle.models.Personaje;
 
 import java.io.IOException;
@@ -12,20 +14,17 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import static com.ivn.diamondbattle.managers.SpriteManager.*;
+import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS_GAME_GUN;
 
 public class NetworkManager extends Listener.ThreadedListener {
 
     static public final int tcpPort = 54555;
     static public final int udpPort = 54777;
     static public final int timeOut = 6000;
-    static public final int maxIntentos = 3;
 
     static public int miId = 0;
-    private boolean yo = true;
 
     static public Client client;
-
-    private int intentos;
 
     public NetworkManager(){
         super(new Listener());
@@ -37,13 +36,12 @@ public class NetworkManager extends Listener.ThreadedListener {
 
             registrar();
 
-            InetAddress address = null;
-            while(address == null && intentos < maxIntentos){
-                address = client.discoverHost(udpPort, timeOut);
-                intentos ++;
-            }
+            InetAddress address = client.discoverHost(udpPort, timeOut);
 
+
+            //client.connect(timeOut, "25.103.219.29", tcpPort, udpPort);
             client.connect(timeOut, address, tcpPort, udpPort);
+
 
             client.addListener(this);
 
@@ -56,10 +54,24 @@ public class NetworkManager extends Listener.ThreadedListener {
 
 
     public void connected (Connection connection) {
-        System.out.println("Conectaado aal servidor.");
+        System.out.println("Conectado al servidor.");
     }
 
     public void received (Connection connection, Object object) {
+
+        if(object instanceof AddDiamante){
+            AddDiamante addDiamante = (AddDiamante)object;
+
+            diamantes.put(addDiamante.id, new Diamante(addDiamante.pos));
+        }
+
+        if(object instanceof RemoveDiamante){
+            RemoveDiamante removeDiamante = (RemoveDiamante) object;
+
+            diamantes.removeKey(removeDiamante.id);
+        }
+
+
         // TODO
         if (object instanceof RemovePersonaje) {
             personajes.removeKey(((RemovePersonaje) object).id);
@@ -71,7 +83,7 @@ public class NetworkManager extends Listener.ThreadedListener {
             System.out.println("tamnio array personajes - "+addPersonajes.ids.size());
             for(int i = 0; i < addPersonajes.ids.size(); i++){
                 if(addPersonajes.ids.get(i) != miId)
-                    personajes.put(addPersonajes.ids.get(i),new Personaje(ResourceManager.getRegion(addPersonajes.idsTexturas.get(i)),addPersonajes.nombres.get(i), false));
+                    personajes.put(addPersonajes.ids.get(i),new Personaje(ResourceManager.getRegion(addPersonajes.idsTexturas.get(i), TEXTURE_ATLAS_GAME_GUN),addPersonajes.nombres.get(i), false));
             }
         }
 
@@ -80,7 +92,7 @@ public class NetworkManager extends Listener.ThreadedListener {
             AddPersonaje addPersonaje = (AddPersonaje)object;
 
             miId = connection.getID();
-            personajes.put(miId,new Personaje(ResourceManager.getRegion(miTextura),miNombre, true));
+            personajes.put(miId,new Personaje(ResourceManager.getRegion(miTextura,TEXTURE_ATLAS_GAME_GUN),miNombre, true));
 
         }
 
@@ -91,15 +103,21 @@ public class NetworkManager extends Listener.ThreadedListener {
                 personajes.get(updatePersonaje.id).setPosition(updatePersonaje.pos.x, updatePersonaje.pos.y);
                 personajes.get(updatePersonaje.id).setRotation(updatePersonaje.rotation);
                 personajes.get(updatePersonaje.id).setVida(updatePersonaje.vida);
+                personajes.get(updatePersonaje.id).tamañoLaser = updatePersonaje.tamañoLaser;
+                personajes.get(updatePersonaje.id).diamantes = updatePersonaje.diamantes;
             }
-            /*
-                TODO MOVER BALAS PJ, COMPROBAR QUE BALAS
-            if(personajes.get(updatePersonaje.id).balas.size == updatePersonaje.posBalas.size())
-                for(int i = 0; i< updatePersonaje.posBalas.size() ; i++){
-                    personajes.get(updatePersonaje.id).balas.get(i).position = updatePersonaje.posBalas.get(i);
-                }
 
-             */
+             //   TODO MOVER BALAS PJ, COMPROBAR QUE BALAS
+
+            if(personajes.get(updatePersonaje.id) != null) {
+                personajes.get(updatePersonaje.id).balas.clear();
+                for (int i = 0; i < updatePersonaje.posBalas.size(); i++) {
+                    Bala bala = new Bala(updatePersonaje.posBalas.get(i));
+                    bala.setRotation(updatePersonaje.rotationBalas.get(i));
+                    personajes.get(updatePersonaje.id).balas.add(bala);
+                }
+            }
+
         }
 
         /*
@@ -135,6 +153,9 @@ public class NetworkManager extends Listener.ThreadedListener {
         kryo.register(Vector2.class);
         kryo.register(ArrayList.class);
         kryo.register(MovePersonaje.class);
+        kryo.register(Disparar.class);
+        kryo.register(AddDiamante.class);
+        kryo.register(RemoveDiamante.class);
 
     }
 
@@ -146,7 +167,10 @@ public class NetworkManager extends Listener.ThreadedListener {
         public Vector2 pos;
         public float rotation;
         public ArrayList<Vector2> posBalas;
+        public ArrayList<Float> rotationBalas;
         public int vida;
+        public float tamañoLaser;
+        public int diamantes;
 
         public UpdatePersonaje(){}
 
@@ -154,6 +178,7 @@ public class NetworkManager extends Listener.ThreadedListener {
             this.id = id;
             this.pos = pos;
             posBalas = new ArrayList<>();
+            rotationBalas = new ArrayList<>();
             this.vida = vida;
         }
     }
@@ -186,6 +211,7 @@ public class NetworkManager extends Listener.ThreadedListener {
         public int id;
         public Vector2 dir;
         public float rotation;
+        public Vector2 poscionCursor;
 
         public MovePersonaje(){}
 
@@ -199,4 +225,35 @@ public class NetworkManager extends Listener.ThreadedListener {
         public ArrayList<String> idsTexturas = new ArrayList<>();
         public ArrayList<String> nombres = new ArrayList<>();
     }
+
+    static public class Disparar {
+        public int id;
+        public Vector2 dir;
+
+        public Disparar(){}
+
+        public Disparar(Vector2 dir){
+            this.dir = dir;
+        }
+    }
+
+    static public class AddDiamante {
+        public int id;
+        public Vector2 pos;
+
+        public AddDiamante(){}
+
+        public AddDiamante(int id, Vector2 pos){
+            this.id = id;
+            this.pos = pos;
+        }
+    }
+
+    static public class RemoveDiamante {
+        public int id;
+
+        public RemoveDiamante(int id ){this.id = id;}
+        public RemoveDiamante(){}
+    }
+
 }

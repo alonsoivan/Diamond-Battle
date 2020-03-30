@@ -1,6 +1,7 @@
 package com.ivn.diamondbattle.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.ivn.diamondbattle.managers.CameraManager;
 
@@ -16,5 +17,10 @@ public class Util {
 
     public static Vector3 getMousePosInGameWorld() {
         return CameraManager.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+    }
+
+    public static Vector2 getPosInGameWorld(Vector2 pos){
+        Vector3 aux = CameraManager.camera.unproject(new Vector3(pos.x,pos.y, 0));
+        return new Vector2(aux.x,aux.y);
     }
 }

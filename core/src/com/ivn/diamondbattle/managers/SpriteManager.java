@@ -2,14 +2,13 @@ package com.ivn.diamondbattle.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.ivn.diamondbattle.Aplication;
+import com.ivn.diamondbattle.models.Diamante;
 import com.ivn.diamondbattle.models.Personaje;
 
+import static com.ivn.diamondbattle.managers.HUD.drawHUD;
 import static com.ivn.diamondbattle.managers.NetworkManager.miId;
 import static com.ivn.diamondbattle.util.Util.getMousePosInGameWorld;
 import static com.ivn.diamondbattle.util.Util.getRotation;
@@ -18,30 +17,18 @@ public class SpriteManager {
 
     private Aplication game;
 
-    private Batch batch;
-
     public static String miTextura;
     public static String miNombre;
 
     static public ArrayMap<Integer, Personaje> personajes;
-    //public Array<Item> items;
+    static public ArrayMap<Integer, Diamante> diamantes;
 
-
-    /*Array<SpriteAnimation> animations;
-    private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
-        @Override
-        protected Rectangle newObject () {
-            return new Rectangle();
-        }
-    };
-    public Array<Rectangle> tiles;
-    */
 
     public SpriteManager(Aplication game) {
         this.game = game;
 
         personajes = new ArrayMap<>();
-        batch = CameraManager.renderer.getBatch();
+        diamantes = new ArrayMap<>();
     }
 
     /**
@@ -53,29 +40,30 @@ public class SpriteManager {
         movePersonaje.dir = new Vector2(0,0);
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            Vector3 pos = getMousePosInGameWorld();
-            //NetworkManager.client.sendTCP(new Disparar(new Vector2(pos.x,pos.y)));
-
+            NetworkManager.client.sendTCP(new NetworkManager.Disparar());
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
            movePersonaje.dir = movePersonaje.dir.add(new Vector2(-5,0));
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
             movePersonaje.dir = movePersonaje.dir.add(new Vector2(5,0));
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
             movePersonaje.dir = movePersonaje.dir.add(new Vector2(0,5));
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
             movePersonaje.dir = movePersonaje.dir.add(new Vector2(0,-5));
         }
 
         if(miId != 0)
             personajes.get(miId).setRotation(getRotation());
+
+
+        movePersonaje.poscionCursor =  new Vector2(getMousePosInGameWorld().x,getMousePosInGameWorld().y);
 
 
         movePersonaje.rotation = getRotation();
@@ -90,15 +78,24 @@ public class SpriteManager {
         CameraManager.renderer.render();
 
 
-        batch.begin();
+        drawHUD();
 
-        //drawHud();
 
-        ArrayMap.Keys<Integer> ids = personajes.keys();
-        while(ids.hasNext()) {
-            personajes.get(ids.next()).pintar(batch);
+        CameraManager.batch.begin();
+
+
+        ArrayMap.Keys<Integer> idsPersonajes = personajes.keys();
+        while(idsPersonajes.hasNext()) {
+            int id = idsPersonajes.next();
+            personajes.get(id).draw(CameraManager.batch);
         }
 
-        batch.end();
+        ArrayMap.Keys<Integer> idsDiamantes = diamantes.keys();
+        while(idsDiamantes.hasNext()) {
+            int id = idsDiamantes.next();
+            diamantes.get(id).draw(CameraManager.batch);
+        }
+
+        CameraManager.batch.end();
     }
 }

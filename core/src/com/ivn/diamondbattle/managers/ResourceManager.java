@@ -6,14 +6,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.utils.Array;
 
 import java.io.File;
 
-import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS;
+import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS_GAME_GUN;
+import static com.ivn.diamondbattle.util.Constantes.TEXTURE_ATLAS_SELECTION;
 
 public class ResourceManager {
     public static AssetManager assets = new AssetManager();
@@ -35,6 +34,21 @@ public class ResourceManager {
     public static NinePatch health;
     public static NinePatch container;
 
+
+    // LASER
+    public static Texture tbegin1;
+    public static Texture tbegin2;
+    public static Texture tmid1;
+    public static Texture tmid2;
+    public static Texture tend1;
+    public static Texture tend2;
+
+
+    // DIAMANTE PANTALLA
+    public static Texture diamante;
+    public static BitmapFont numeroDiamante;
+
+
     /**
      * Carga todos los recursos del juego
      */
@@ -44,8 +58,19 @@ public class ResourceManager {
         //loadSounds();
         //loadMusics();
 
-        assets.load("characters/characters.atlas", TextureAtlas.class);
+        assets.load(TEXTURE_ATLAS_GAME_GUN, TextureAtlas.class);
+        assets.load(TEXTURE_ATLAS_SELECTION, TextureAtlas.class);
+        assets.load("balas/bala.png",Texture.class);
 
+
+        // LASER
+        // TODO HACER SPRITESHEET
+        tbegin1 = new Texture("laser/beamstart1.png");
+        tbegin2 = new Texture("laser/beamstart2.png");
+        tmid1 = new Texture("laser/beammid1.png");
+        tmid2 = new Texture("laser/beammid2.png");
+        tend1 = new Texture("laser/beamend1.png");
+        tend2 = new Texture("laser/beamend2.png");
 
         // NOMBRE PANTALLA
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/LemonMilk.otf"));
@@ -59,6 +84,15 @@ public class ResourceManager {
         parameter.color = Color.RED;
         miNombrePantalla = generator.generateFont(parameter);
         miNombrePantalla.setUseIntegerPositions(false);
+
+
+        // DIAMANTE
+        diamante = new Texture("diamantes/diamante.png");
+        parameter.color = Color.WHITE;
+        parameter.size = 20;
+        numeroDiamante = generator.generateFont(parameter);
+        numeroDiamante.setUseIntegerPositions(false);
+
 
         // BARRA VIDA
         parameter.color = Color.WHITE;
@@ -95,26 +129,27 @@ public class ResourceManager {
      * @param name
      * @return
      */
-    public static TextureRegion getRegion(String name) {
-        return assets.get(TEXTURE_ATLAS, TextureAtlas.class).findRegion(name);
+    public static TextureRegion getRegion(String name, String texture) {
+        return assets.get(texture, TextureAtlas.class).findRegion(name);
     }
 
     /**
      * Obtiene una región de textura determinada de las que forman una animación
      */
+    /*
     public static TextureRegion getRegion(String name, int position) {
         return assets.get(TEXTURE_ATLAS, TextureAtlas.class).findRegion(name, position);
     }
-
+*/
     /**
      * Obtiene todas las regiones de textura que forman una misma animación
      * @param name
      * @return
-     */
+     *//*
     public static Array<TextureAtlas.AtlasRegion> getRegions(String name) {
         return assets.get(TEXTURE_ATLAS, TextureAtlas.class).findRegions(name);
     }
-
+*/
     /**
      * Obtiene un sonido determinado
      */
