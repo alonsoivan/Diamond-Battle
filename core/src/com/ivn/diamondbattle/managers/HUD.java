@@ -15,11 +15,18 @@ public class HUD {
     public static BitmapFont font = new BitmapFont();
 
     public static void drawHUD(){
-        // DIAMANTE
+
 
         batch.begin();
+
+        // DIAMANTE
         batch.draw(diamante,30, Gdx.graphics.getHeight() - diamante.getHeight() - 30);
         font.draw(batch,"x "+personajes.get(miId).diamantes,diamante.getWidth() + 20, Gdx.graphics.getHeight() - diamante.getHeight() - 30);
+
+
+        // TIMER
+        font.draw(batch,ResourceManager.timer,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()-50);
+
         batch.end();
     }
 }

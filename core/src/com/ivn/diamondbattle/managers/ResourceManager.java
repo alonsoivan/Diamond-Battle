@@ -49,6 +49,9 @@ public class ResourceManager {
     public static BitmapFont numeroDiamante;
 
 
+    // TIMER
+    public static String timer;
+
     /**
      * Carga todos los recursos del juego
      */
@@ -103,6 +106,10 @@ public class ResourceManager {
 
         health = new NinePatch(textureVida, 0, 0, 0, 0);
         container = new NinePatch(textureContainerVida, 5, 5, 5, 5);
+
+
+        // TIMER
+        timer = "";
     }
 
     /** Actualiza la carga de recursos */

@@ -59,6 +59,24 @@ public class SpriteManager {
             movePersonaje.dir = movePersonaje.dir.add(new Vector2(0,-5));
         }
 
+
+
+        // DIAGONALES
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.W)){
+            movePersonaje.dir = movePersonaje.dir.add(new Vector2(-1,-1));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.S)){
+            movePersonaje.dir = movePersonaje.dir.add(new Vector2(-1,1));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Input.Keys.S)){
+            movePersonaje.dir = movePersonaje.dir.add(new Vector2(1,1));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Input.Keys.W)){
+            movePersonaje.dir = movePersonaje.dir.add(new Vector2(1,-1));
+        }
+
+
+
         if(miId != 0)
             personajes.get(miId).setRotation(getRotation());
 
@@ -67,6 +85,9 @@ public class SpriteManager {
 
 
         movePersonaje.rotation = getRotation();
+
+
+        movePersonaje.dir.scl(Gdx.graphics.getDeltaTime()*50f);
         NetworkManager.client.sendTCP(movePersonaje);
     }
 

@@ -1,10 +1,12 @@
 package com.ivn.diamondbattle.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.ivn.diamondbattle.Aplication;
 import com.ivn.diamondbattle.managers.CameraManager;
+import com.ivn.diamondbattle.managers.MyTimer;
 import com.ivn.diamondbattle.managers.NetworkManager;
 import com.ivn.diamondbattle.managers.SpriteManager;
 
@@ -19,6 +21,9 @@ public class GameScreen implements Screen {
     NetworkManager networkManager;
 
 
+    // TIMER PRUEBA
+    MyTimer myTimer = new MyTimer(0,30);
+
     public GameScreen(Aplication game) {
         this.game = game;
 
@@ -31,6 +36,9 @@ public class GameScreen implements Screen {
     public void show() {
 
         cameraManager.init();
+
+        // PRUEBA TIMER
+        myTimer.start();
     }
 
     @Override
@@ -44,6 +52,7 @@ public class GameScreen implements Screen {
 
         spriteManager.drawFrame();
         spriteManager.handleInput();
+
     }
 
     @Override

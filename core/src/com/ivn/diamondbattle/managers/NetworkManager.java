@@ -39,8 +39,8 @@ public class NetworkManager extends Listener.ThreadedListener {
             InetAddress address = client.discoverHost(udpPort, timeOut);
 
 
-            //client.connect(timeOut, "25.103.219.29", tcpPort, udpPort);
-            client.connect(timeOut, address, tcpPort, udpPort);
+            client.connect(timeOut, "25.103.219.29", tcpPort, udpPort);
+            //client.connect(timeOut, address, tcpPort, udpPort);
 
 
             client.addListener(this);
@@ -58,6 +58,10 @@ public class NetworkManager extends Listener.ThreadedListener {
     }
 
     public void received (Connection connection, Object object) {
+
+        if(object instanceof Timer){
+            ResourceManager.timer = ((Timer) object).timer;
+        }
 
         if(object instanceof AddDiamante){
             AddDiamante addDiamante = (AddDiamante)object;
@@ -156,6 +160,7 @@ public class NetworkManager extends Listener.ThreadedListener {
         kryo.register(Disparar.class);
         kryo.register(AddDiamante.class);
         kryo.register(RemoveDiamante.class);
+        kryo.register(Timer.class);
 
     }
 
@@ -254,6 +259,15 @@ public class NetworkManager extends Listener.ThreadedListener {
 
         public RemoveDiamante(int id ){this.id = id;}
         public RemoveDiamante(){}
+    }
+
+    static public class Timer {
+        public String timer;
+
+        public Timer(){};
+        public Timer(String timer){
+            this.timer = timer;
+        }
     }
 
 }
