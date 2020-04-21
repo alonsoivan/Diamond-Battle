@@ -59,6 +59,11 @@ public class NetworkManager extends Listener.ThreadedListener {
 
     public void received (Connection connection, Object object) {
 
+        if(object instanceof ArrayList){
+            ArrayList<String> ranking = (ArrayList)object;
+            HUD.ranking = ranking;
+        }
+
         if(object instanceof Timer){
             ResourceManager.timer = ((Timer) object).timer;
         }

@@ -32,8 +32,8 @@ public class Personaje extends Sprite {
         // LASER
         this.laser = new Laser();
         this.tamañoLaser = 500;
-        this.laser.color = Color.BLUE;
-        this.laser.rayColor = Color.BLUE;
+        this.laser.color = Color.RED;
+        this.laser.rayColor = Color.GREEN;
 
     }
 
