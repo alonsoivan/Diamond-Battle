@@ -10,6 +10,10 @@ import static com.ivn.diamondbattle.managers.SpriteManager.personajes;
 
 public class Util {
 
+    public enum Arma{
+        GUN, SHOTGUN, RAFAGA
+    }
+
     public static float getRotation(){
         float angle = (float) Math.atan2(getMousePosInGameWorld().y - personajes.get(miId).getY(), getMousePosInGameWorld().x - personajes.get(miId).getX());
         return (float) Math.toDegrees(angle);

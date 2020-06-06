@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.ivn.diamondbattle.Aplication;
+import com.ivn.diamondbattle.models.Arma;
 import com.ivn.diamondbattle.models.Diamante;
 import com.ivn.diamondbattle.models.Personaje;
 
@@ -22,6 +23,7 @@ public class SpriteManager {
 
     static public ArrayMap<Integer, Personaje> personajes;
     static public ArrayMap<Integer, Diamante> diamantes;
+    static public ArrayMap<Integer, Arma> armas;
 
 
     public SpriteManager(Aplication game) {
@@ -29,6 +31,7 @@ public class SpriteManager {
 
         personajes = new ArrayMap<>();
         diamantes = new ArrayMap<>();
+        armas = new ArrayMap<>();
     }
 
     /**
@@ -98,10 +101,6 @@ public class SpriteManager {
 
         CameraManager.renderer.render();
 
-
-        drawHUD();
-
-
         CameraManager.batch.begin();
 
 
@@ -117,6 +116,14 @@ public class SpriteManager {
             diamantes.get(id).draw(CameraManager.batch);
         }
 
+        ArrayMap.Keys<Integer> idsArmas = armas.keys();
+        while(idsArmas.hasNext()) {
+            int id = idsArmas.next();
+            armas.get(id).draw(CameraManager.batch);
+        }
+
         CameraManager.batch.end();
+
+        drawHUD();
     }
 }

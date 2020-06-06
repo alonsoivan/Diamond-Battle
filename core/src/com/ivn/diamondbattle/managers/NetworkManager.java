@@ -5,9 +5,11 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.ivn.diamondbattle.models.Arma;
 import com.ivn.diamondbattle.models.Bala;
 import com.ivn.diamondbattle.models.Diamante;
 import com.ivn.diamondbattle.models.Personaje;
+import com.ivn.diamondbattle.util.Util;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -72,6 +74,18 @@ public class NetworkManager extends Listener.ThreadedListener {
             AddDiamante addDiamante = (AddDiamante)object;
 
             diamantes.put(addDiamante.id, new Diamante(addDiamante.pos));
+        }
+
+        if(object instanceof AddArma){
+            AddArma addArma = (AddArma) object;
+
+            armas.put(addArma.id, new Arma(addArma.pos,addArma.tipo));
+        }
+
+        if(object instanceof RemoveArma){
+            RemoveArma removeArma = (RemoveArma) object;
+
+            armas.removeKey(removeArma.id);
         }
 
         if(object instanceof RemoveDiamante){
@@ -166,6 +180,9 @@ public class NetworkManager extends Listener.ThreadedListener {
         kryo.register(AddDiamante.class);
         kryo.register(RemoveDiamante.class);
         kryo.register(Timer.class);
+        kryo.register(AddArma.class);
+        kryo.register(RemoveArma.class);
+        kryo.register(Util.Arma.class);
 
     }
 
@@ -275,4 +292,25 @@ public class NetworkManager extends Listener.ThreadedListener {
         }
     }
 
+
+    static public class AddArma {
+        public int id;
+        public Vector2 pos;
+        public Util.Arma tipo;
+
+        public AddArma(){}
+
+        public AddArma(int id, Vector2 pos, Util.Arma tipo){
+            this.id = id;
+            this.pos = pos;
+            this.tipo = tipo;
+        }
+    }
+
+    static public class RemoveArma {
+        public int id;
+
+        public RemoveArma(int id ){this.id = id;}
+        public RemoveArma(){}
+    }
 }

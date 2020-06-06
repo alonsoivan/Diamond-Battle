@@ -52,6 +52,12 @@ public class ResourceManager {
     // TIMER
     public static String timer;
 
+
+    // WEAPONS
+    public static Texture gun;
+    public static Texture shotgun;
+    public static Texture rafagas;
+
     /**
      * Carga todos los recursos del juego
      */
@@ -110,6 +116,12 @@ public class ResourceManager {
 
         // TIMER
         timer = "";
+
+
+        // WEAPONS
+        rafagas = new Texture("weapons/rafagas.png");
+        gun = new Texture("weapons/gun.png");
+        shotgun = new Texture("weapons/shotgun.png");
     }
 
     /** Actualiza la carga de recursos */
