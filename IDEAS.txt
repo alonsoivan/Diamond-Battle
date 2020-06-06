@@ -1,0 +1,62 @@
+
+- Barra de vida
+
+- al morir atenuar pantalla 5s
+
+- efecto ver cuanto daño haces : -4 -6 -7- 3 -5- 3
+
+- escudo
+
+- Gana quien más monedas tenga
+
+- Van apareciendo diamantes, Vidas Y armas
+
+- munición de cada tipo
+
+-Equipos 2v2. Y 50v50.o solo
+
+- 4 / 6 / 8 personasa
+
+- ARCO
+
+- parpadeos cuando te dan o te quitan vida
+
+- nombre debajo del jugador
+
+- POWER UPPS  - ITEMS
+	- BALAS + GORDAS +DAÑO
+	- MIRA LASER
+	- más vision
+	- invisibilidad
+
+
+- parpadeo del jugador
+- transparencia  sprite.setAlpha(0.1f);
+
+- tiempo
+
+- arbustos
+
+- MAPA BRAWLS
+
+- cambiar el cursor de color
+
+- elegir skin y nombre del jugador
+
+- rotar balas enemigos 
+
+- Lobby con chat
+
+- HALL OF FAME
+
+- preferencias
+
+- hacer skin
+
+- mirar pools
+
+- meter nombre con enter
+
+- CAPTURA DE EXCEPCIONES
+
+-TRAILER
